@@ -1117,3 +1117,166 @@ body {
         transform: translateY(0);
     }
 }
+
+/* Card Actions Gap */
+.card-actions {
+    gap: 0.4rem;
+}
+
+/* Copy Button Styling */
+.copy-btn {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 0.4rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.copy-btn:hover {
+    background: var(--color-primary-glow);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    transform: scale(1.05);
+}
+
+.icon-copy-mini {
+    width: 14px;
+    height: 14px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 0.65rem;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-normal);
+}
+
+.theme-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: var(--text-primary);
+}
+
+/* Light Theme Variables Overrides */
+body.light-theme {
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --card-border: rgba(15, 23, 42, 0.08);
+    --card-border-hover: rgba(56, 189, 248, 0.5);
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    
+    --color-feature-bg: rgba(16, 185, 129, 0.08);
+    --color-changed-bg: rgba(245, 158, 11, 0.08);
+    --color-issue-bg: rgba(244, 63, 94, 0.08);
+    --color-deprecated-bg: rgba(168, 85, 247, 0.08);
+    --color-general-bg: rgba(6, 182, 212, 0.08);
+    
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(226, 232, 240, 0.8) 0, transparent 50%),
+        radial-gradient(at 50% 0%, rgba(203, 213, 225, 0.3) 0, transparent 60%),
+        radial-gradient(at 100% 0%, rgba(186, 230, 253, 0.2) 0, transparent 50%);
+}
+
+/* Light Theme Element Customizations */
+body.light-theme .theme-toggle-btn:hover {
+    background: rgba(15, 23, 42, 0.05);
+    border-color: rgba(15, 23, 42, 0.15);
+}
+
+body.light-theme .brand-text h1 {
+    background: linear-gradient(135deg, #0f172a 30%, #0369a1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+body.light-theme .search-box-wrapper input {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(15, 23, 42, 0.15);
+}
+
+body.light-theme .search-box-wrapper input:focus {
+    background: rgba(255, 255, 255, 1);
+}
+
+body.light-theme .filter-pill {
+    background: rgba(15, 23, 42, 0.02);
+}
+
+body.light-theme .filter-pill:hover {
+    background: rgba(15, 23, 42, 0.05);
+}
+
+body.light-theme .stat-item {
+    background: rgba(255, 255, 255, 0.6);
+    border-color: rgba(15, 23, 42, 0.05);
+}
+
+body.light-theme .stat-item:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.light-theme .textarea-wrapper textarea {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(15, 23, 42, 0.12);
+}
+
+body.light-theme .textarea-wrapper textarea:focus {
+    background: rgba(255, 255, 255, 1);
+}
+
+body.light-theme .tweet-preview-bubble {
+    background: rgba(15, 23, 42, 0.03);
+    border-color: rgba(15, 23, 42, 0.06);
+}
+
+body.light-theme .tweet-preview-text {
+    color: var(--text-primary);
+}
+
+body.light-theme .update-card-content code {
+    background: rgba(15, 23, 42, 0.05);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: var(--color-deprecated);
+}
+
+body.light-theme .skeleton-header {
+    background: rgba(15, 23, 42, 0.05);
+}
+
+body.light-theme .skeleton-card {
+    background: rgba(15, 23, 42, 0.03);
+}
+
+body.light-theme .skeleton-header::after,
+body.light-theme .skeleton-card::after {
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(15, 23, 42, 0.02) 20%,
+        rgba(15, 23, 42, 0.04) 60%,
+        rgba(255, 255, 255, 0)
+    );
+}
+
+body.light-theme .toast {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: var(--text-primary);
+}
+

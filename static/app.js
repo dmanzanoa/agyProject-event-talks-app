@@ -33,6 +33,8 @@ const charCount = document.getElementById('char-count');
 const tweetPreviewRender = document.getElementById('tweet-preview-render');
 const tweetBtn = document.getElementById('tweet-btn');
 const toastContainer = document.getElementById('toast-container');
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const exportBtn = document.getElementById('export-btn');
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
@@ -95,6 +97,60 @@ function setupEventListeners() {
         if (!selectedUpdate) return;
         const text = tweetTextarea.value;
         shareOnTwitter(text);
+    });
+
+    // Theme Toggle Theme switch listener
+    themeToggleBtn.addEventListener('click', () => {
+        const isLightTheme = document.body.classList.toggle('light-theme');
+        const moonIcon = themeToggleBtn.querySelector('.moon-icon');
+        const sunIcon = themeToggleBtn.querySelector('.sun-icon');
+        
+        if (isLightTheme) {
+            moonIcon.style.display = 'none';
+            sunIcon.style.display = 'block';
+            showToast('Swapped to Light Theme', 'success');
+        } else {
+            moonIcon.style.display = 'block';
+            sunIcon.style.display = 'none';
+            showToast('Swapped to Dark Theme', 'success');
+        }
+    });
+
+    // Export CSV list listener
+    exportBtn.addEventListener('click', () => {
+        if (filteredUpdates.length === 0) {
+            showToast('No updates available to export.', 'error');
+            return;
+        }
+        
+        try {
+            const headers = ['Date', 'Type', 'Description'];
+            const csvRows = [headers.join(',')];
+            
+            filteredUpdates.forEach(up => {
+                const escapedDate = up.date.replace(/"/g, '""');
+                const escapedType = up.type.replace(/"/g, '""');
+                const escapedText = up.text.replace(/"/g, '""');
+                csvRows.push(`"${escapedDate}","${escapedType}","${escapedText}"`);
+            });
+            
+            const csvString = csvRows.join('\n');
+            const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `bigquery_release_notes_${activeFilter}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showToast(`Exported ${filteredUpdates.length} updates to CSV!`, 'success');
+        } catch (err) {
+            console.error('Export error:', err);
+            showToast('Failed to export CSV.', 'error');
+        }
     });
 }
 
@@ -326,6 +382,12 @@ function renderFeed() {
                         <span class="card-meta-date">${update.date}</span>
                     </div>
                     <div class="card-actions">
+                        <button class="copy-btn" title="Copy to Clipboard" aria-label="Copy update to clipboard">
+                            <svg class="icon-copy-mini" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
                         <button class="quick-share-btn" title="Quick Tweet" aria-label="Quick tweet about this release note">
                             <svg class="icon-x-mini" viewBox="0 0 24 24">
                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -340,6 +402,17 @@ function renderFeed() {
             
             // Card select listener
             card.addEventListener('click', (e) => {
+                // Handle copy to clipboard click
+                if (e.target.closest('.copy-btn')) {
+                    navigator.clipboard.writeText(update.text).then(() => {
+                        showToast("Copied to clipboard!", "success");
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                        showToast("Failed to copy text", "error");
+                    });
+                    return;
+                }
+
                 // Avoid triggers when clicking the quick share button itself
                 if (e.target.closest('.quick-share-btn')) {
                     const defaultText = composeDefaultTweet(update);
